@@ -1,0 +1,164 @@
+@use "./base.scss";
+
+.App {
+  background-color: base.$native-bg;
+  width: 100vw;
+  min-height: 100vh;
+  height: auto;
+  color: base.$native-white;
+}
+
+nav {
+  @include base.center-lr();
+}
+
+/* Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+  .App {
+    nav {
+      width: 100%;
+      height: 70px;
+      border-bottom: 0.5px solid base.$native-white;
+      justify-content: space-around;
+
+      div:nth-child(1) {
+        width: 30%;
+        height: 100%;
+        background-color: base.$native-white;
+
+        svg.settings {
+          width: 30px;
+          color: base.$native-bg;
+        }
+      }
+
+      div:nth-child(2) {
+        flex: 1;
+        height: 100%;
+        background-color: base.$native-bg;
+        @include base.center-lr();
+        justify-content: flex-end;
+
+        img {
+          height: 50px;
+          width: 50px;
+          object-fit: cover;
+          border-radius: 50%;
+          border: 2px solid base.$native-white;
+          margin-right: 10px;
+        }
+      }
+    }
+
+    aside.videoPanel {
+      video {
+        border: 2px solid beige;
+        width: 400px;
+      }
+    }
+
+    main {
+      width: 100%;
+      @include base.center-td();
+      justify-content: flex-start;
+      padding-top: 10px;
+
+      p.options-pick {
+        font-weight: bold;
+        font-size: 25px;
+        margin: 0px;
+      }
+    }
+
+    .games-view-display {
+      width: 85vw;
+      padding: 10px;
+      border-radius: 10px;
+      @include base.center-lr();
+      flex-wrap: wrap;
+      align-items: flex-start;
+
+    }
+  }
+
+  //game-card
+  .game-card {
+    height: 150px;
+    width: 140px;
+    margin: 3px;
+    border-radius: 10px;
+    border: 2px solid base.$native-white;
+    color: base.$native-white;
+    background-color: base.$native-bg;
+    @include base.center-td();
+    transition: 0.9s;
+    position: relative;
+    z-index: 100;
+    p.game-card-title {
+      // padding: 1px;
+    }
+    svg.game-card-icon {
+      width: 70px;
+      height: 70px;
+    }    
+    // &:hover{
+    //   background: linear-gradient( base.$native-bg 50%,rgb(0, 191, 255));
+    // }
+    canvas{
+      background-color: transparent;
+      position: absolute;
+      z-index: 0;
+      width: 140px;
+      height: 150px;
+    }
+  }
+
+  //top-navigation router
+  .in-game-nav {
+    height: 50px;
+    background-color: base.$native-bg;
+    padding: 5px;
+    padding-right: 10px;
+    display: flex;
+    @include base.center-lr();
+    // justify-content: flex-start;
+
+    svg {
+      cursor: pointer;
+    }
+
+    .title {
+      margin-left: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      background: linear-gradient(to right, rgb(0, 191, 255), base.$native-bg);
+      padding: 5px;
+      border-top-left-radius: 10px;
+      text-shadow: 0px 0px 5px base.$native-bg;
+      letter-spacing: 2px;
+      font-size: medium;
+    }
+    div.link{
+      padding: 5px;
+      border: 2px solid white;
+      border-radius: 20px;
+      width: 30%;
+      @include base.center-lr();
+    }
+  }
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 768px) {}
+
+/* pad Pro  */
+@media (width: 1024px) {}
+
+/* Medium devices (tablets, 768px and up)*/
+@media (min-width: 769px) and (max-width: 991.98px) {}
+
+/* Large devices (desktops, 992px and up)*/
+@media (min-width: 992px) and (max-width: 1366px) {}
+
+/* Extra large screens */
+@media (min-width: 1367px) {}

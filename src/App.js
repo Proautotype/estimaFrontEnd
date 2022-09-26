@@ -1,56 +1,36 @@
+import React, { useState, useContext, useMemo } from "react";
+import { Provider } from 'react-redux'
 import "./App.css";
-import {SocketService} from './services/SocketServices/SocketJobs';
-import {  useState } from "react";
+import "./assets/scss/mainApp.scss";
+import 'react-confirm-alert/src/react-confirm-alert.css';
+import { simpleDataContext, simpleUserData, SocketServiceContext } from "./services/Context";
+//
+// import { BrowserRouter, Router } from "react-router-dom";
+import { SocketService } from './services/SocketServices/SocketService'
+import { Route, Routes } from "react-router";
+import MainPage from "./View/MainPage";
+import GM_SHOWCARD from "./View/Games/GM_SHOWCARD";
+import Chat from "./View/Chat";
+import GM_DOUBT_IT from "./View/Games/GM_DOUBT_IT";
+import store from "./@redux/store";
 
-function App() {
-  const [serverDetails, setServerDetails] = useState({host:"127.0.0.1",port:5000,nsp:""})
-  const [value, setvalue] = useState("")
-  const [others, setOtherUsers] = useState([])
-  const [userName, setUserName] = useState("Proau");
-  const SocketServiceActions = new SocketService(serverDetails.host,serverDetails.port,userName,serverDetails.nsp);
- 
-  function connectServer(){
-    setServerDetails((prev) => {return {...prev,nsp:"hello"}})
-    SocketServiceActions.ConnectToServer();
-    SocketServiceActions.listenIncoming("server-onuser-details").then((res)=>{
-      setUserName(res?.user)
-      setOtherUsers(res?.others)
-    });
-    
-  }
-  function sendMessage(){
-    const didIt = SocketServiceActions.sendSingleMsg("message",value)
-    if(!didIt){
-      alert("Connect to a room or server")
-    }
-  }
- 
-  return <div className="App">    
-    <input type="text" value={serverDetails.host} onChange={({target})=> setServerDetails((prev)=>{
-      return {...prev,host:target.value}
-    })}/>
-    <button onClick={sendMessage}>Set Host</button>
-    <br></br>
-    <input type="text" value={serverDetails.port} onChange={({target})=> setServerDetails((prev)=>{
-      return {...prev,port:target.value}
-    })}/>
-    <button onClick={sendMessage}>Set Port</button>
-    <br/>
-    <label>Name: </label>
-    <input type="text" value={userName} onChange={({target})=> setUserName(target.value)}/>
-     <br/>
-    <button style={{width:"200px"}} onClick={connectServer}>Connect to server</button>
-    <br/>
-    <input type="text" value={value} onChange={({target})=> setvalue(target.value)}/>
-    <button onClick={sendMessage}>Send Message</button>
-    <br/>
-    <p>Other Users</p>
-    <ul>
-     {
-       others?.map((other,i)=> <li key={other.name + i}>{other.name}</li>)
-     }
-    </ul>
-  </div>;
-}
+const App = () => {
+  const [SocketServiceInstance, setSocketInstance] = useState(new SocketService());
+
+  return (
+    <Provider store={store}>
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<MainPage />} />
+          <Route path="games">
+            <Route path="showcard" element={<GM_SHOWCARD socketService={SocketServiceInstance} />} />
+            <Route path="doubtit" element={<GM_DOUBT_IT />} />
+          </Route>
+          <Route path="chat" element={<Chat />} />
+        </Routes>
+      </div>
+    </Provider>
+  );
+};
 
 export default App;

@@ -1,0 +1,21 @@
+$native-bg:#282c34;
+$native-white:#ffffff;
+$bg-white:#faf8f8;
+$darkblue: rgb(0, 191, 255);
+p{
+    margin: 0px;
+}
+
+@mixin center-td {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+@mixin center-lr {
+    display: flex;
+    flex-direction: row;
+    justify-content:  space-between;
+    align-items: center;
+}

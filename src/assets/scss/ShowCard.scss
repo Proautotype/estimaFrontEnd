@@ -1,0 +1,387 @@
+@use "./base.scss";
+
+.show-card-body {
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+    width: 100%;
+    position: relative;
+}
+
+button {
+    margin-left: 10px;
+    border: none;
+    outline: none;
+    background: transparent;
+    border-radius: 5px;
+    padding: 5px;
+    width: 100px;
+    height: 35px;
+    cursor: pointer;
+    border: 2px solid white;
+    color: white;
+
+    &:hover {
+        background: linear-gradient(to right, base.$native-bg 30%, base.$darkblue);
+    }
+}
+
+.startPanel {
+    // background-color: rgb(30, 30, 30);
+    margin-bottom: 10px;
+    width: 100%;
+    position: relative;
+    height: 40px;
+    background-color: rgba(0, 0, 0, 0.762);
+    padding: 10px;
+
+    button {}
+
+    input {
+        position: absolute;
+        right: 30px;
+        top: 7px;
+        height: 30px;
+        width: 130px;
+        outline: none;
+        border: none;
+        padding: 5px;
+        border-radius: 5px;
+        font-size: 25px;
+    }
+}
+
+.sc-side-nav {
+    @include base.center-td();
+    justify-content: flex-start;
+    padding: 5px;
+    display: grid;
+    grid-template: auto auto auto / 110px 110px 110px;
+    padding-left: 5%;
+    grid-gap: 15px;
+    overflow: auto;
+    max-height: 400px;
+    height: 100%;
+    box-shadow: inset 0px 5px 5px 5px base.$native-bg;
+}
+//represent a single user card
+.username {
+    padding: 7px;
+    border-radius: 5px;
+    width: 70%;
+    height: 75px;
+    margin: 5px 0px;
+    font-size: 12px;
+    border: 2px solid rgb(0, 191, 255);
+    font-weight: 600;
+    position: relative;
+    z-index: 2;
+    margin-bottom: 10px;
+    letter-spacing: 3px;
+
+    &::before {
+        content: " ";
+        width: 8px;
+        height: 7px;
+        background-color: rgb(0, 191, 255);
+        position: absolute;
+        z-index: 1;
+        top: 5%;
+        left: -8px;
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+        box-shadow:
+            -3px 0px 0px rgb(0, 191, 255),
+            -3px 0px 5px rgb(0, 191, 255),
+            -3px 0px 10px rgb(0, 191, 255),
+            -3px 0px 15px rgb(0, 191, 255),
+            -3px 0px 15px rgb(0, 191, 255),
+            -3px 0px 15px rgb(0, 191, 255);
+        // background-color: rgb(255, 58, 58);
+    }
+
+    // &::after {
+    //     content: " ";
+    //     width: 10px;
+    //     height: 5px;
+    //     background-color: rgb(0, 191, 255);
+    //     position: absolute;
+    //     z-index: 1;
+    //     bottom: -10px;
+    //     left: 90%;
+    //     border-bottom-right-radius: 10px;
+    //     border-bottom-left-radius: 10px;
+    // }
+
+    &:hover {
+        &::after {
+            animation-name: _username_hover;
+            animation-duration: 1s;
+            animation-iteration-count: infinite;
+            animation-direction: alternate;
+        }
+    }
+
+    .text-container {
+        width: 97%;
+        height: 73%;
+        margin-top: 5px;
+        border: 2px solid rgb(0, 191, 255);
+        @include base.center-td();
+        color: base.$native-white;
+        border-radius: 5px;
+        font-size: 40px;
+        position: relative;
+
+        .cover {
+            position: absolute;
+            background-color: base.$native-bg;
+            width: 100%;
+            height: 100%;
+            border-radius: 5px;
+            @include base.center-td();
+        }
+    }
+
+    .indicator {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background-color: transparent;
+        width: 8px;
+        height: 8px;
+        border-radius: 20px;
+    }
+
+}
+
+.sc-create-server-pannel {
+    position: absolute;
+    width: 100%;
+    height: 450px;
+    //    background-color: rgba(0, 0, 0, 0.479);
+    z-index: 500;
+    @include base.center-td();
+    top: 30px;
+
+    .wrapper {
+        width: 80%;
+        height: 80%;
+        background: base.$native-bg;
+        position: relative;
+        padding: 10px;
+        background-color: rgba(0, 0, 0, 0.762);
+        font-size: 20px;
+        border-radius: 10px;
+        letter-spacing: 5px;
+        @include base.center-td();
+        justify-content: space-around;
+
+        hr {
+            height: 2px;
+            background: base.$native-white;
+            width: 80%;
+            margin: 0px;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            margin: 2px 0px;
+        }
+
+        .formElement {
+            @include base.center-td();
+            align-items: flex-start;
+            width: 80%;
+
+            label {
+                font-weight: bolder;
+            }
+
+            input {
+                width: 95%;
+                height: 40px;
+                font-size: 30px;
+                padding-left: 5px;
+                background-color: rgba(16, 16, 16, 0.668);
+                color: base.$native-white;
+            }
+        }
+
+        .controls {
+            width: 80%;
+            @include base.center-lr();
+            margin: 0px;
+
+            button {
+                margin: 0px;
+            }
+        }
+
+        .include-admin {
+            width: 80%;
+            margin: 5px 0px;
+            letter-spacing: 2px;
+
+            input[type='checkbox'] {
+                width: 20px;
+                height: 20px;
+                margin-right: 20px;
+            }
+        }
+    }
+
+}
+
+.error-panel {
+    position: absolute;
+    font-size: 10px;
+    top: -30px;
+    left: 5px;
+    letter-spacing: 3px;
+    font-weight: bold;
+    font-family: 'Armata';
+    color: tomato;
+}
+
+.prompt {
+    position: absolute;
+    width: 100%;
+    height: 100px;
+    background-color: base.$native-bg;
+    right: 0px;
+    top: 0px;
+    @include base.center-td();
+    justify-content: flex-start;
+    border: 1px solid base.$darkblue;
+    z-index: 100;
+
+    svg {
+        margin-right: 10px;
+
+        :hover {
+            color: tomato;
+        }
+    }
+
+    .title-bar {
+        height: 35%;
+        width: 100%;
+        font-weight: bold;
+        background: linear-gradient(to left, base.$native-bg, base.$darkblue);
+        @include base.center-lr();
+        padding: 0px 30px;
+        margin-left: 10px;
+        ;
+    }
+
+    .description {
+        height: 65%;
+        width: 100%;
+        background-color: rgba(209, 57, 57, 0);
+        @include base.center-td();
+        font-size: 20px;
+
+        &::selection {
+            background-color: transparent;
+        }
+    }
+}
+
+.dashboard {
+    width: 100%;
+    height: 90vh;
+
+    // background-color: rgba(128, 255, 0, 0.174);
+    button {
+        width: 100%;
+        height: 100%;
+        margin: 0px;
+    }
+
+    .control-panel {
+        border-top: 2px solid base.$darkblue;
+        border-bottom: 2px solid base.$darkblue;
+        padding-top: 7px;
+        padding-bottom: 7px;
+        margin: 5px 0px;
+        width: 100%;
+        height: 20%;
+        // background-color: rgba(128, 255, 0, 0.174);
+        display: grid;
+        grid-template: repeat(2, 1fr)/repeat(2, 1fr);
+        grid-gap: 10px;
+
+        .session-info {
+            @include base.center-lr();
+            width: 100%;
+            height: 100%;
+            // justify-content: flex-start;
+            align-items: flex-start;
+
+            div.desc {
+                margin: 3px 0px;
+                @include base.center-td();
+            }
+
+            div.round {
+                padding: 5px;
+                @include base.center-td();
+                font-size: 2em;
+            }
+        }
+    }
+    .users-panel {
+        width: 100%;
+        height: 70%;
+        background-color: rgba(37, 74, 74, 0.782);  
+        display: grid;
+        grid-template: repeat(3,1fr) / repeat(3,1fr);      
+    }
+    .action-panel {
+        width: 100%;
+        height: 25%;
+        background-color: rgba(20, 105, 105, 0.645);  
+        margin-top: 5px;      
+    }
+}
+
+@keyframes _username_hover {
+    0% {
+        left: 90%;
+        background-color: rgb(0, 191, 255);
+    }
+
+    50% {
+        left: 50%;
+        background-color: rgb(0, 191, 255);
+    }
+
+    100% {
+        left: 5%;
+        background-color: rgb(0, 255, 102);
+        box-shadow:
+            -3px 0px 0px rgb(0, 255, 102),
+            -3px 0px 5px rgb(0, 255, 102),
+            -3px 0px 10px rgb(0, 255, 102),
+            -3px 0px 15px rgb(0, 255, 102),
+            -3px 0px 15px rgb(0, 255, 102),
+            -3px 0px 15px rgb(0, 255, 102);
+    }
+}
+
+/* Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 768px) {}
+
+/* pad Pro  */
+@media (width: 1024px) {}
+
+/* Medium devices (tablets, 768px and up)*/
+@media (min-width: 769px) and (max-width: 991.98px) {}
+
+/* Large devices (desktops, 992px and up)*/
+@media (min-width: 992px) and (max-width: 1366px) {}
+
+/* Extra large screens */
+@media (min-width: 1367px) {}
