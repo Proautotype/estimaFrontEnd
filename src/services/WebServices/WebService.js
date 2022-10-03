@@ -1,4 +1,5 @@
 import axios from "axios";
+
 export class WebService {
   async createGame(gameDetail) {
     // const {admin, server, ID, adminAsMember,socketService } = gameDetail;
@@ -9,13 +10,7 @@ export class WebService {
         method: "POST",
         data: gameDetail,
         params: gameDetail,
-      });
-      const socketService = gameDetail?.socketService;
-      socketService.sendGenericData("create-server", {
-        admin: gameDetail?.admin,
-        room: gameDetail?.server,
-        ops: "cg"
-      });
+      });      
       return {
         status,
         data
@@ -35,15 +30,17 @@ export class WebService {
         url: `/join`,
         method: "POST",
         data: gameDetail,
-      });
-      if(status === 201){
-        return {
-          status,
-          body:data
-        }
+      });        
+      return {
+        status,
+        data
       }
     } catch (error) {
-      console.dir(error);
+      console.dir(error)
+      return {
+        status: error?.response?.data?.body?.errorNumber,
+        data: error?.response?.data?.body?.description
+      };
     }
   }
 }

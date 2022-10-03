@@ -7,9 +7,11 @@ export default {
             },
             sessionDetails: {
                 name: "",
-                state: ""
+                state: "",
+                index:""
             },
             isAdmin: false,
+            chatID:"",
             members: [],
             process:"pending",
             errorMsg:""

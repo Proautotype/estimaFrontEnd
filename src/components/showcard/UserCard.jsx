@@ -62,8 +62,8 @@ const UserCard = ({ user }) => {
     >
       {user.name}
       <motion.div className='text-container'>
-        <p>{user?.value}</p>
-        {(user?.value !== null || !user.visibility) &&
+        <p>{user?.scorecard}</p>
+        {(user?.scorecard !== null || !user.visibility) &&
           <motion.div className='cover'>
             <AiOutlineEyeInvisible strokeWidth={0.5} />
           </motion.div>}
@@ -73,9 +73,9 @@ const UserCard = ({ user }) => {
         variants={indicator_variant}
         initial="hidden"
         animate={
-          (user?.value === null)
+          (user?.scorecard === null)
             ? `waiting` :
-            user?.value !== null && !user.visibility ?
+            user?.scorecard !== null && !user.visibility ?
               "available" : "showing"
         }
       >

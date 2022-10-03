@@ -7,11 +7,11 @@ import { SocketService } from '../../services/SocketServices/SocketService';
 import { useDispatch, useSelector } from 'react-redux';
 import { nanoid } from '@reduxjs/toolkit';
 import { WebService } from '../../services/WebServices/WebService';
-import { clearStatus, rdCreateGame } from '../../@redux/features/showcard_slice';
-import { GiInfo, GiTrashCan } from "react-icons/gi";
+import { clearStatus, clearData, saveData, addMembers, addMember } from '../../@redux/features/showcard_slice';
+import { GiTrashCan } from "react-icons/gi";
 import { CircularProgress } from "@mui/joy"
 
-const GM_SHOWCARD = ({socketService = new SocketService()}) => {
+const GM_SHOWCARD = ({ socketService = new SocketService() }) => {
   //redux
   const _showcard_session_data = useSelector(({ showcard_session_data }) => showcard_session_data);
   const dispatch = useDispatch();
@@ -23,9 +23,17 @@ const GM_SHOWCARD = ({socketService = new SocketService()}) => {
   const [isCreate, setIsCreate] = useState(true);
   const [isWorking, setIsWorking] = useState(false);
   const [error, setError] = useState({ error: false, msg: "" });
-  const [prompt, setprompt] = useState({ error: false, title: "Title 8", msg: "hello I am prompt" })
+  const [prompt, setprompt] = useState({
+    error: false,
+    title: "Title 8",
+    msg: "hello I am prompt",
+    timer: 5
+  });
+  const [numberCards, setNumberCards] = useState([
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+    11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21
+  ]);
   //framer variants
-  // socketService.connectNow();
   const games_vd_variant = {
     hidden: { opacity: 0 },
     show: {
@@ -72,11 +80,53 @@ const GM_SHOWCARD = ({socketService = new SocketService()}) => {
     setprompt({ error: false, title: "", msg: "" });
     dispatch(clearStatus())
   }
+  function copylink(event) {
+    navigator.clipboard
+      .writeText(_showcard_session_data?.serverDetails?.server)
+      .then((data) => {
+        setprompt({
+          error: true,
+          msg: "Server Link Copied Successfully",
+          title: "IO-Buz: Link"
+        });
+      })
+  }
+  function leaveServer() {
+    dispatch(clearData())
+  }
   //create server 
   async function createServer(event) {
     event.preventDefault();
     if (admin.length > 5 || server.length > 5) {
-      dispatch(rdCreateGame({ admin, server, ID: nanoid(5), adminAsMember,socketService }));
+      // dispatch(rdCreateGame({ admin, server, ID: nanoid(5), adminAsMember, socketService }));
+      webservice
+        .createGame({ admin, server, ID: nanoid(5), adminAsMember })
+        .then((res) => {
+          console.log('data ss', res?.data);
+          if (res?.status === 201) {
+            dispatch(saveData(res?.data))
+            settoggleCreateServer(false);
+            setprompt({
+              error: true,
+              msg: "Server created successfully!",
+              title: "IO-Buz"
+            });
+            //create socket room with server name
+            socketService.sendGenericData("create-server", {
+              room: res?.data?.serverDetails?.server,
+            });
+          } else {
+            setprompt({
+              error: true,
+              msg: "Server already exist!",
+              title: "IO-Buz"
+            });
+          }
+          setIsWorking(false);
+        }).catch(err => {
+          console.log(err)
+          setIsWorking(false);
+        })
       setIsWorking(true);
     } else {
       setError({
@@ -88,91 +138,141 @@ const GM_SHOWCARD = ({socketService = new SocketService()}) => {
   //join server
   async function joinServer(event) {
     event.preventDefault();
-   const response = await webservice.joinGame({serverName:server,memberName:admin});
-   if(response){
-    socketService.sendGenericData("join-server",)
-   }
-
-  }
-  //effects
-  useEffect(() => {
-    socketService.listenIncomingPromise("created").then((data) => {
-      console.log("create data ", data)
-    })
-    socketService.listenIncomingPromise("joined").then((data) => {
-      console.log("create data ", data)
-    })
-  }, [socketService?.socket]);
-
-  useEffect(() => {
-    if (_showcard_session_data?.process === "fulfilled") {
-      console.log("fulfilled checking...")
-      setIsWorking(false);
-      settoggleCreateServer(false);
-      setprompt({
-        error: true,
-        msg: "Server created successfully ",
-        title: "IO-Buz"
-      });
-      //after server is created by http server, create its corresponding socket room by the servaname 
-      
-    } else if (_showcard_session_data?.process === "rejected") {
-      console.log("rejected checking...", _showcard_session_data)
-      setIsWorking(false);
+    if (admin.length > 5 || server.length > 5) {
+      // dispatch(rdCreateGame({ admin, server, ID: nanoid(5), adminAsMember, socketService }));
+      webservice
+        .joinGame({ serverName: server, memberName: admin })
+        .then((res) => {
+          console.dir(res);
+          if (res?.status === 201) {
+            dispatch(saveData(res?.data));
+            settoggleCreateServer(false);
+            setprompt({
+              error: true,
+              msg: "Hey you are in!",
+              title: "IO-Buz"
+            });
+            //create socket room with server name
+            console.log('sending request ... ')
+            socketService.sendGenericData("join-server", {
+              room: res?.data?.body?.serverDetails?.server,
+              memberName: admin,
+              chatID: res?.data?.body?.chatid
+            });
+            console.log('sent request ... ')
+          } else {
+            if (res?.status === 404) {
+              setprompt({
+                error: true,
+                msg: res?.data,
+                title: "IO-Buz",
+                timer: 10
+              });
+            } else if (res?.status === 403) {
+              setprompt({
+                error: true,
+                msg: res?.data,
+                title: "IO-Buz",
+                timer: 10
+              });
+            }
+          }
+          setIsWorking(false);
+        }).catch(err => {
+          console.log(err)
+          setIsWorking(false);
+        })
+      setIsWorking(true);
+    } else {
       setError({
         error: true,
-        msg: _showcard_session_data?.errorMsg
+        msg: "Admin or Server name length should be at least 5"
       })
     }
-  }, [_showcard_session_data])
+  }
+  // socketService.listenIncomingPromise("created").then((data) => {
+  //   console.log("create data ", data)
+  // })
+
+  useEffect(() => {
+    socketService.listenIncomingPromise("newMember").then((data) => {
+      console.log("join data ", data);
+      dispatch(addMember(data));
+    });
+    socketService.listenIncomingPromise("others").then((data) => {
+      console.log("others data ", data);
+      dispatch(addMembers(data));
+    });
+  }, [socketService.socket])
+
 
   window.addEventListener('unload', () => {
-    dispatch(clearStatus());
+    // dispatch(clearStatus());
   });
 
   return (
     <div className='show-card-m'>
       <InGameNav reverseDestination={"/"} title={"SHOWCARD"}>
-        <p style={{ letterSpacing: "4px", fontWeight: "bolder" }}>#{_showcard_session_data?.serverDetails?.server}</p>
+        <p onDoubleClick={copylink} style={{ letterSpacing: "4px", fontWeight: "bolder" }}>#{_showcard_session_data?.serverDetails?.server}</p>
       </InGameNav>
       <motion.div className='show-card-body'>
-        {!_showcard_session_data?.serverDetails?.server && <motion.div className='startPanel'>
-          <button onClick={() => {
-            settoggleCreateServer(true);
-            if (toggleCreateServer) {
-              setIsCreate(true);
-            }
-            setError({
-              error: false,
-              msg: ""
-            })
-          }}>
-            Create Server
-          </button>
-          <button onClick={() => {
-            settoggleCreateServer(true);
-            setIsCreate(false)
-            if (toggleCreateServer) {
-              setIsCreate(false);
-            }
-            setError({
-              error: false,
-              msg: ""
-            })
-          }}>
-            Join Server
-          </button>
-        </motion.div>}
-        {prompt.error && <Prompt title={prompt.title} msg={prompt.msg} onClose={closePrompt} />}
+        {!_showcard_session_data?.serverDetails?.server
+          && <motion.div className='startPanel'>
+            <button onClick={() => {
+              settoggleCreateServer(true);
+              if (toggleCreateServer) {
+                setIsCreate(true);
+              }
+              setError({
+                error: false,
+                msg: ""
+              })
+            }}>
+              Create Server
+            </button>
+            <button onClick={() => {
+              settoggleCreateServer(true);
+              setIsCreate(false)
+              if (toggleCreateServer) {
+                setIsCreate(false);
+              }
+              setError({
+                error: false,
+                msg: ""
+              })
+            }}>
+              Join Server
+            </button>
+          </motion.div>}
+        {prompt.error &&
+          <Prompt title={prompt.title}
+            msg={prompt.msg}
+            onClose={closePrompt}
+            timerSeconds={prompt.timer}
+          />}
         {/* //component for displaying players in the game */}
 
         {/* //end of component for displaying players in the game */}
         <div className='dashboard'>
-          {_showcard_session_data?.isAdmin && <div className='control-panel'>
-            <button>Start New Session</button>
-            <button>End Current Session</button>
-            <button>Reveal Play Cards</button>
-            <div className='session-info'>
+          {_showcard_session_data?.isAdmin &&
+            <div className='control-panel'>
+              <button>Start New Session</button>
+              <button>End Current Session</button>
+              <button>Reveal Play Cards</button>
+              <div className='session-info'>
+                <div className='desc'>
+                  <p>Name:</p>
+                  <p>State:</p>
+                </div>
+                <div className='round'>
+                  <p>1</p>
+                </div>
+              </div>
+            </div>}
+          {!_showcard_session_data?.isAdmin && _showcard_session_data?.serverDetails?.serverLink &&
+            <div className='member-control-panel'>
+              <button onClick={leaveServer}>Leave Server</button>
+              {/* <div className='session-info'>
               <div className='desc'>
                 <p>Name:</p>
                 <p>State:</p>
@@ -180,8 +280,8 @@ const GM_SHOWCARD = ({socketService = new SocketService()}) => {
               <div className='round'>
                 <p>1</p>
               </div>
-            </div>
-          </div>}
+            </div> */}
+            </div>}
           <motion.div className='users-panel'
             variants={games_vd_variant}
             initial={"hidden"}
@@ -189,7 +289,18 @@ const GM_SHOWCARD = ({socketService = new SocketService()}) => {
           >
             {_showcard_session_data?.members?.map((user) => <UserCard key={nanoid(7)} user={user} />)}
           </motion.div>
-          <div className='action-panel'></div>
+          <div className='action-panel'>
+            <motion.div
+              className='number-palette'>
+              {numberCards.map((number, idx) => (
+                <motion.div key={idx}
+                  className={`number-box ${idx === 4 ?
+                    "active" : ""}`}>{number}
+                </motion.div>
+              ))}
+            </motion.div>
+            <button>Submit</button>
+          </div>
         </div>
         {/* //component for creating server and joining server | is controlled by framer-motion */}
         <motion.div className='sc-create-server-pannel'
@@ -277,13 +388,12 @@ function Loading() {
   ></motion.div>
 }
 
-const Prompt = ({ title, msg, onClose }) => {
-  let min = 3;
+const Prompt = ({ title, msg, onClose, timerSeconds = 3 }) => {
   useEffect(() => {
     setTimeout(() => {
       onClose()
-    }, min * 1000);
-  }, [])
+    }, timerSeconds * 1000);
+  }, [onClose, timerSeconds])
 
   return <motion.div
     className='prompt'

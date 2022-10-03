@@ -245,18 +245,19 @@ button {
 .prompt {
     position: absolute;
     width: 100%;
-    height: 100px;
+    height: 70px;
     background-color: base.$native-bg;
     right: 0px;
-    top: 0px;
+    top: -5px;
     @include base.center-td();
     justify-content: flex-start;
     border: 1px solid base.$darkblue;
-    z-index: 100;
+    z-index: 500;
 
     svg {
         margin-right: 10px;
-
+        height: 30px;
+        width: 30px;
         :hover {
             color: tomato;
         }
@@ -288,7 +289,7 @@ button {
 
 .dashboard {
     width: 100%;
-    height: 90vh;
+    height: 80vh;
 
     // background-color: rgba(128, 255, 0, 0.174);
     button {
@@ -331,16 +332,64 @@ button {
     }
     .users-panel {
         width: 100%;
-        height: 70%;
-        background-color: rgba(37, 74, 74, 0.782);  
+        height: 74%;
+        // background-color: rgba(37, 74, 74, 0.782);  
         display: grid;
-        grid-template: repeat(3,1fr) / repeat(3,1fr);      
+        grid-template: repeat(3,100px) / repeat(3,120px); 
+        padding-left: 15px;     
     }
     .action-panel {
         width: 100%;
         height: 25%;
-        background-color: rgba(20, 105, 105, 0.645);  
+        // background-color: rgba(20, 105, 105, 0.645);  
         margin-top: 5px;      
+        @include base.center-td();
+        justify-content: flex-start ;
+        button{
+            height: 100px;
+        }
+    }
+
+    .number-palette{
+        width: 400px;
+        height: 270px;
+        max-width: 400px;
+        overflow-x: scroll; 
+        display: grid; 
+        grid-template: repeat(1, 50px) / repeat(7, 50px);
+        padding: 0px;
+        grid-gap: 5px;    
+        padding: 0px 10px;
+        padding-left: 20px;
+        position: relative;
+    }
+
+    .number-box{
+        width: 100%;
+        height: 100%;
+        background:rgb(0, 0, 0) ;
+        color: base.$native-white;
+        font-size: 2em;
+        font-weight: bolder;
+        @include base.center-td();
+        margin: 5px;
+        border-radius: 5px;
+        position: relative;
+        &.active{
+            border: 3px solid white;
+            width: 95%;
+            height: 88%;
+            &::before{
+                content: ' ';
+                position: absolute;
+                top: 0px;
+                left: 2px;
+                width: 82%;
+                height: 85%;
+                border:3px solid white;
+                border-radius: 50px;
+            }
+        }
     }
 }
 

@@ -36,12 +36,6 @@ export class SocketService {
   prepareConnection = () => {
     this.manager = new Manager(this.URL, {
       reconnectionDelayMax: 10000,
-      auth: {
-        token: "123",
-      },
-      query: {
-        username: this.USERNAME,
-      },
       autoConnect: false
     });
     this.socket = this.manager.socket("/");
