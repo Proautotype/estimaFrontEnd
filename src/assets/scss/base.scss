@@ -2,10 +2,11 @@ $native-bg:#282c34;
 $native-white:#ffffff;
 $bg-white:#faf8f8;
 $darkblue: rgb(0, 191, 255);
+$gradient: linear-gradient(to right, rgb(0, 191, 255) -50%, rgb(255, 0, 204));
 p{
     margin: 0px;
 }
-
+// AccountBackground
 @mixin center-td {
     display: flex;
     justify-content: center;

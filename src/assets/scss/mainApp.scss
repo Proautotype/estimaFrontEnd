@@ -72,11 +72,9 @@ nav {
 
     .games-view-display {
       width: 85vw;
-      padding: 10px;
-      border-radius: 10px;
-      @include base.center-lr();
-      flex-wrap: wrap;
-      align-items: flex-start;
+      display: grid;
+      grid-template: repeat(2, auto) / repeat(2, auto);
+      grid-gap: 10px;
 
     }
   }

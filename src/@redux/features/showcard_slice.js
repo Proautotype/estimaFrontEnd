@@ -2,6 +2,23 @@ import { createAsyncThunk, createSlice, current, } from "@reduxjs/toolkit";
 import { WebService } from "../../services/WebServices/WebService";
 // import showCardSession from "../reducers/showcard_session.reducer";
 import reduxConstants from "../reduxConstants";
+const _state = {
+    serverDetails: {
+        server: "",
+        serverLink: ""
+    },
+    sessionDetails: {
+        name: "",
+        state: "",
+        index: ""
+    }, memberDetails: {
+        chatID: "",
+        members: [],
+        isAdmin: false,
+    },
+    process: "pending",
+    errorMsg: ""
+}
 
 const webservice = new WebService();
 export const rdCreateGame = createAsyncThunk('showcard/create', async (api, thunk) => {
@@ -17,7 +34,8 @@ export const rdJoinGame = createAsyncThunk('showcard/join', async (api, thunk) =
 
 const showcard_slice = createSlice({
     name: reduxConstants.SHOWCARD_SESSION.name,
-    initialState: reduxConstants.SHOWCARD_SESSION.initialState,
+    // initialState: reduxConstants.SHOWCARD_SESSION.initialState,
+    initialState: _state,
     reducers: {
         clearStatus(state, action) {
             state.process = "pending"
@@ -27,23 +45,53 @@ const showcard_slice = createSlice({
             state.isAdmin = null
             state.serverDetails = {};
             state.sessionDetails = {};
-            state.members = [];
-            state.chatID = "";
+            state.memberDetails = {
+                chatID: "",
+                isAdmin: false,
+                members: []
+            }
             state.errorMsg = "";
         },
         saveData(state, { payload }) {
             state.process = "fulfilled";
-            state.isAdmin = payload?.body?.isAdmin;
             state.serverDetails = { ...payload?.body?.serverDetails };
             state.sessionDetails = payload?.body?.sessionDetails;
-            state.members = payload?.body?.members;
-            state.chatID = payload?.body?.chatid;
+            state.memberDetails = {
+                chatID: payload?.body?.chatid,
+                isAdmin: payload?.body?.isAdmin,
+                members: []
+            }
             state.errorMsg = "Server created successfully!";
         },
-        addMember(state, { payload }) {
-            state.members.push(payload)
-        }, addMembers(state, { payload }) {
-            state.members = payload
+        addMember({ memberDetails }, { payload }) {
+            const profile = memberDetails['members'].find((value) =>
+                value.chatID === payload?.chatID);
+            if (profile === undefined) {
+                memberDetails['members'] = [...memberDetails['members'], payload];
+                memberDetails['members'].map((data) => {
+                    if (data.chatID === memberDetails['chatID']) {
+                        data.memberName = "Me"
+                    }
+                    return data
+                });
+            }
+        }, addMembers({ memberDetails }, { payload }) {
+            // state.members = payload;
+            memberDetails['members'] = [...payload];
+            // put the current user first, and then sort by username
+            memberDetails['members'].sort((a, b) => {
+                if (a?.chatID === memberDetails['chatID']) return -1;
+                if (b?.chatID === memberDetails['chatID']) return 1;
+                if (a?.chatID < b?.chatID) return -1;
+                return a?.chatID > b?.chatID ? 1 : 0;
+            })
+        },
+        memberCast(state, { payload }) {
+            const memberIndex = state['memberDetails']['members'].findIndex((value, idx) => value.chatID === payload?.chatID);
+            if (memberIndex !== -1) {
+                const selectedMember = state['memberDetails']['members'][memberIndex];
+                state['memberDetails']['members'][memberIndex] = { ...selectedMember, scorecard: payload?.scorecard }
+            }
         }
     },
     extraReducers: (builder) => {
@@ -65,7 +113,6 @@ const showcard_slice = createSlice({
                 state.process = "rejected";
                 state.errorMsg = payload.data;
             }
-            ;
         }).addCase(rdJoinGame.pending, (state, { payload }) => {
             state.process = "pending"
         }).addCase(rdJoinGame.rejected, (state, { payload }) => {
@@ -89,6 +136,6 @@ const showcard_slice = createSlice({
     }
 })
 
-export const { clearStatus, clearData, saveData, addMember, addMembers } = showcard_slice.actions;
+export const { clearStatus, clearData, saveData, addMember, addMembers, memberCast } = showcard_slice.actions;
 
 export default showcard_slice.reducer;

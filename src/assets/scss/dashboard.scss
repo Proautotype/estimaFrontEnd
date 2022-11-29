@@ -1,0 +1,729 @@
+@use "./base.scss";
+
+.dashboard {
+    width: 80%;
+    border: 2px solid rgb(114, 15, 111);
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 200px auto 250px;
+    padding: 5px;
+    font-family: Armata;
+    gap: 5px;
+}
+
+.left {
+    display: grid;
+    -webkit-grid-template-row: auto auto auto;
+    gap: 10px;
+    border-right: 2px solid rgb(114, 15, 111);
+    padding-right: 5px;
+
+    .title {
+        text-align: center;
+        font-size: 0.8em;
+        background: base.$gradient;
+        padding: 2px 10px;
+        border-radius: 5px;
+
+        &::selection {
+            background-color: transparent;
+        }
+    }
+
+    .profile {
+        width: 100%;
+        border-radius: 10px;
+
+        .profile-index {
+            @include base.center-td();
+            justify-content: flex-start;
+            gap: 5px;
+        }
+
+        .profile-image {
+            position: relative;
+
+            &:hover>div.pencil {
+                opacity: 1;
+
+                svg {
+                    fill: rgb(250, 10, 238);
+                    padding: 2px;
+                }
+            }
+
+            img {
+                height: 85px;
+                border-radius: 50%;
+                background-repeat: no-repeat;
+                object-fit: cover;
+                border: 2px solid rgb(255, 255, 255);
+            }
+
+            div.pencil {
+                top: 37px;
+                width: 90px;
+                background-color: rgba(0, 0, 0, 0.279);
+                position: absolute;
+                @include base.center-td();
+                border-radius: 10px;
+                cursor: pointer;
+                opacity: 0;
+
+                svg {
+                    fill: rgba(37, 37, 37, 0.7);
+                    padding: 2px;
+                }
+            }
+        }
+
+        .profile-name {
+            @include base.center-td();
+
+            p.name {
+                font-size: 0.8em;
+            }
+        }
+    }
+
+    .portion {
+        height: 150px;
+        @include base.center-td();
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap: 5px;
+        transition: 0.5s;
+
+        .heading {
+            @include base.center-lr();
+            gap: 10px;
+            width: 98%;
+
+            svg {
+                cursor: pointer;
+                fill: rgb(89, 255, 0);
+                opacity: 0.5;
+                transition: 0.5;
+
+                &:hover {
+                    opacity: 1;
+                }
+            }
+        }
+
+        .list {
+            width: 100%;
+            max-height: 100%;
+            overflow-y: auto;
+            overflow-x: hidden;
+            display: grid;
+            grid-template-rows: auto;
+            gap: 5px;
+            transition: 0.5s;
+
+            .input-element {
+                width: 100%;
+                height: 30px;
+                @include base.center-lr();
+                justify-content: flex-start;
+                gap: 5px;
+
+                input[type='text'] {
+                    width: 80%;
+                    height: 25px;
+                    outline: none;
+                    border-radius: 10px;
+                    border: none;
+                    background: none;
+                    padding: 0px 5px;
+                    font-family: Silkscreen, cursive;
+                    border: 2px solid transparent;
+                    font-size: 0.7em;
+                    color: white;
+
+                    &:hover {
+                        background-color: rgba(255, 255, 255, 0.067);
+                        border: 2px solid rgba(255, 255, 255, 0.279);
+                    }
+                }
+
+                svg {
+                    cursor: pointer;
+                }
+            }
+        }
+
+        .input-element {
+            width: 100%;
+            height: 30px;
+            @include base.center-lr();
+            justify-content: flex-start;
+            gap: 5px;
+
+            input[type='text'] {
+                width: 80%;
+                height: 25px;
+                outline: none;
+                border-radius: 10px;
+                border: none;
+                background: none;
+                padding: 0px 5px;
+                font-family: Silkscreen, cursive;
+                border: 2px solid transparent;
+                font-size: 0.7em;
+                color: white;
+
+                &:hover {
+                    background-color: rgba(255, 255, 255, 0.067);
+                    border: 2px solid rgba(255, 255, 255, 0.279);
+                }
+            }
+
+            svg {
+                cursor: pointer;
+            }
+        }
+    }
+
+    .projects {
+        max-height: 200px;
+        border-top: 2px solid rgb(114, 15, 111);
+        border-bottom: 2px solid rgb(114, 15, 111);
+        padding: 5px 0px;
+    }
+}
+
+.center {
+    background-color: rgba(55, 54, 65, 0.207);
+    .content {
+        width: 100%;
+        @include base.center-lr();
+        align-items: flex-start;
+        margin-bottom: 10px;
+        .top{
+            width: 100%;
+            @include base.center-lr();
+            gap: 10px;
+            justify-content: flex-start;
+        }
+        .title {
+            background-color: rebeccapurple;
+            @include base.center-td();
+            gap: 5px;
+            padding: 5px;
+            border-radius: 10px;
+            width: 130px;
+            .project {
+                max-width: 120px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+                font-size: 0.9em;
+                cursor: pointer;
+                &:hover{
+                    overflow: inherit;
+                }
+            }
+        }
+        .description{     
+            height: 130px;
+            font-family: Armata;
+            font-size: 0.7em;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 5px;
+            border-right: 1px solid white;
+            padding-right: 10px;
+            p{
+                background-color: rgba(255, 0, 212, 0.519);
+                padding: 2px 7px;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            &.about{
+                border-right: 0px solid white;
+                p{
+                    background-color: transparent;                    
+                }
+                div{                    
+                    @include base.center-lr();
+                    svg{
+                        cursor: pointer;
+                        opacity: 0;
+                    }
+                    &:hover{
+                        svg{
+                            opacity: 1;
+                        }
+                    }
+                }
+                .actions{
+                    width: 250px;
+                    height: 30px;
+                    gap: 10px;
+                    button{
+                        white-space: nowrap;
+                        &:hover{
+                            background-color: rgb(0, 255, 89);
+                            color: black;
+                        }
+                    }
+                }
+            }            
+        }
+    }
+}
+
+.right {
+    border-left: 2px solid rgb(114, 15, 111);
+    padding-left: 5px;
+
+    .title {
+        text-align: center;
+        width: 100%;
+        font-size: 0.8em;
+        background: base.$gradient;
+        padding: 2px 10px;
+        border-radius: 5px;
+    }
+
+    .content {
+        display: grid;
+        grid-template: repeat(2, auto) / repeat(2, auto);
+        gap: 5px;
+        font-family: Armata;
+        width: 90%;
+
+        div.member {
+            background: rgba(0, 0, 0, 0.347);
+            padding: 3px;
+            width: 120px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            display: grid;
+            grid-template-columns: 20px auto;
+            cursor: pointer;
+            border: 1px solid transparent;
+            .indicator {
+                border-radius: 2px;
+
+                &.online {
+                    padding: 5px;
+                    position: relative;
+                    box-shadow: 1px 0px 2px rgb(255, 0, 51),
+                        0px 0px 3px rgb(255, 0, 51),
+                        0px 0px 5px rgb(255, 0, 51),
+                        0px 0px 7px rgb(255, 0, 51),
+                        0px 0px 5px rgb(255, 0, 51);
+
+                    &::after {
+                        position: absolute;
+                        content: ' ';
+                        width: 10px;
+                        height: 15px;
+                        bottom: -5px;
+                        background-color: rgb(255, 0, 51);
+                        border-radius: 10px;
+                        box-shadow: 0px 0px 2px rgb(255, 0, 51),
+                            0px 0px 2px rgb(255, 0, 51),
+                            0px 0px 2px rgb(255, 0, 51),
+                            0px 0px 2px rgb(255, 0, 51),
+                            0px 0px 3px rgb(255, 0, 51);
+                    }
+                }
+
+                &.offline {
+                    padding: 5px;
+                    position: relative;
+                    box-shadow: 1px 0px 2px rgb(0, 255, 89),
+                        0px 0px 3px rgb(0, 255, 89),
+                        0px 0px 5px rgb(0, 255, 89),
+                        0px 0px 7px rgb(0, 255, 89),
+                        0px 0px 5px rgb(0, 255, 89);
+
+                    &::after {
+                        position: absolute;
+                        content: ' ';
+                        width: 10px;
+                        height: 15px;
+                        bottom: -5px;
+                        background-color: rgb(0, 255, 89);
+                        border-radius: 10px;
+                        box-shadow: 0px 0px 2px rgb(0, 255, 89),
+                            0px 0px 2px rgb(0, 255, 89),
+                            0px 0px 2px rgb(0, 255, 89),
+                            0px 0px 2px rgb(0, 255, 89),
+                            0px 0px 3px rgb(0, 255, 89);
+                    }
+                }
+            }
+
+        }
+    }
+}
+
+@keyframes _rotation {
+    0% {
+        transform: translateY(-100%);
+    }
+
+    100% {
+        transform: translateY(100%);
+    }
+}
+
+.playcard {
+    width: 90px;
+    height: 90px;
+    background-color: rgba(10, 10, 10, 0.233);
+    border: 3px solid rgba(34, 34, 34, 0.703);
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+        content: ' ';
+        position: absolute;
+        width: 98px;
+        height: 98px;
+        inset: 1px;
+        z-index: 5;
+        border-radius: 5px;
+    }
+
+    &::before {
+        content: ' ';
+        position: absolute;
+        width: 170px;
+        height: 180px;
+        background: base.$gradient;
+        inset: 1px;
+        top: 25%;
+        left: -25%;
+        animation: _rotation 10s linear 0s infinite;
+        animation-delay: 3s;
+    }
+
+    .number-card {
+        z-index: 10;
+        position: absolute;
+        width: 97%;
+        height: 97%;
+        background-color: rgb(33, 33, 33);
+        top: 2px;
+        left: 2px;
+        border-top-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        @include base.center-td();
+        font-size: 3em;
+        // text-shadow:
+        //     0px 0px 1px rgb(255, 255, 255),
+        //     0px 0px 2px white,
+        //     0px 0px 3px white;
+        // -webkit-text-fill-color: transparent;
+        cursor: pointer;
+        font-family: Silk;
+
+        .number {
+            width: 100%;
+            @include base.center-td();
+            gap: 5px;
+        }
+
+        .name {
+            font-size: 0.3em;
+        }
+
+        .cover {
+            position: absolute;
+            top: 0px;
+            height: 100%;
+            // width: 50%;
+            background: rgb(34, 32, 32);
+            z-index: 500;
+            border-top-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            @include base.center-td();
+        }
+    }
+}
+
+.item-image {
+    position: relative;
+
+    &:hover>div.pencil {
+        opacity: 1;
+
+        svg {
+            fill: rgb(250, 10, 238);
+            padding: 2px;
+        }
+    }
+
+    img {
+        height: 85px;
+        width: 85px;
+        border-radius: 50%;
+        background-repeat: no-repeat;
+        object-fit: cover;
+        border: 2px solid rgb(255, 255, 255);
+        padding: 5px;
+    }
+
+    div.pencil {
+        top: 45px;
+        width: 100px;
+        background-color: rgba(0, 0, 0, 0.279);
+        position: absolute;
+        @include base.center-td();
+        border-radius: 10px;
+        cursor: pointer;
+        opacity: 0;
+
+        svg {
+            fill: rgba(37, 37, 37, 0.7);
+            padding: 2px;
+        }
+    }
+}
+
+.input-element {
+    width: 100%;
+    height: 30px;
+    @include base.center-lr();
+    justify-content: flex-start;
+    gap: 5px;
+
+    input[type='text'] {
+        width: 80%;
+        height: 25px;
+        outline: none;
+        border-radius: 10px;
+        border: none;
+        background: none;
+        padding: 0px 5px;
+        font-family: Silkscreen, cursive;
+        border: 2px solid transparent;
+        font-size: 0.7em;
+        color: white;
+
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.067);
+            border: 2px solid rgba(255, 255, 255, 0.279);
+        }
+    }
+
+    svg {
+        cursor: pointer;
+    }
+}
+
+.project-item {
+    @include base.center-lr();
+    gap: 10px;
+    width: 95%;
+    background-color: rgba(0, 0, 0, 0.17);
+    font-size: 0.9em;
+    padding: 3px 5px;
+    height: 25px;
+    cursor: pointer;
+    transition: 0.7s;
+    position: relative;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+
+    &:hover {
+        &::before {
+            opacity: 0.2;
+        }
+
+        .actions {
+            opacity: 0.2;
+        }
+    }
+
+    .identifier {
+        width: 75%;
+        @include base.center-lr();
+
+        p {
+            font-size: 0.7em;
+        }
+
+        div {
+            text-align: center;
+            border-radius: 20px;
+            font-size: 0.5em;
+            width: 17px;
+            height: 17px;
+            padding: 1px;
+            text-align: center;
+            font-weight: bold;
+            @include base.center-td();
+            border: 1px solid white;
+        }
+
+        input[type='text'] {
+            width: 70%;
+            height: 25px;
+            outline: none;
+            border-radius: 10px;
+            border: none;
+            background: none;
+            padding: 0px 5px;
+            font-family: Silkscreen, cursive;
+            border: 2px solid transparent;
+            font-size: 0.7em;
+            color: white;
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.067);
+                border: 2px solid rgba(255, 255, 255, 0.279);
+            }
+        }
+    }
+
+    .actions {
+        width: 17%;
+        @include base.center-lr();
+        opacity: 0;
+
+        svg {
+            width: 10px;
+
+            &:nth-child(1) {
+                cursor: pointer;
+                fill: rgb(89, 255, 0);
+            }
+
+            &:nth-child(2) {
+                cursor: pointer;
+                fill: rgb(255, 0, 238);
+            }
+        }
+    }
+
+    &::before {
+        content: ' ';
+        width: 3px;
+        height: 100%;
+        background: base.$gradient;
+        border-radius: 10px;
+        opacity: 0;
+    }
+
+    &.active {
+        .actions {
+            opacity: 1;
+        }
+
+        &::before {
+            opacity: 1;
+        }
+    }
+}
+.estimate-item {
+    @include base.center-lr();
+    gap: 10px;
+    width: 95%;
+    background-color: rgba(0, 0, 0, 0.17);
+    font-size: 0.9em;
+    padding: 3px 5px;
+    height: 25px;
+    cursor: pointer;
+    transition: 0.7s;
+    position: relative;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+
+    &:hover {
+        &::before {
+            opacity: 0.2;
+        }
+
+        .actions {
+            opacity: 0.2;
+        }
+    }
+
+    .identifier {
+        width: 75%;
+        @include base.center-lr();
+
+        p {
+            font-size: 0.7em;
+        }
+
+        div {
+            text-align: center;
+            border-radius: 20px;
+            font-size: 0.5em;
+            width: 17px;
+            height: 17px;
+            padding: 1px;
+            text-align: center;
+            font-weight: bold;
+            @include base.center-td();
+            border: 1px solid white;
+        }
+
+        input[type='text'] {
+            width: 70%;
+            height: 25px;
+            outline: none;
+            border-radius: 10px;
+            border: none;
+            background: none;
+            padding: 0px 5px;
+            font-family: Silkscreen, cursive;
+            border: 2px solid transparent;
+            font-size: 0.7em;
+            color: white;
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.067);
+                border: 2px solid rgba(255, 255, 255, 0.279);
+            }
+        }
+    }
+
+    .actions {
+        width: 17%;
+        @include base.center-lr();
+        opacity: 0;
+
+        svg {
+            width: 10px;
+
+            &:nth-child(1) {
+                cursor: pointer;
+                fill: rgb(89, 255, 0);
+            }
+
+            &:nth-child(2) {
+                cursor: pointer;
+                fill: rgb(255, 0, 238);
+            }
+        }
+    }
+
+    &::before {
+        content: ' ';
+        width: 3px;
+        height: 100%;
+        background: base.$gradient;
+        border-radius: 10px;
+        opacity: 0;
+    }
+
+    &.active {
+        .actions {
+            opacity: 1;
+        }
+
+        &::before {
+            opacity: 1;
+        }
+    }
+}

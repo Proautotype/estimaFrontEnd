@@ -1,8 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { AiOutlineEyeInvisible } from 'react-icons/ai';
+import { FaComment, FaPhone, FaVideo,FaShieldAlt } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
+import { GiChatBubble } from 'react-icons/gi';
 
 const UserCard = ({ user }) => {
+  //redux
+  const _showcard_session_data = useSelector(({ showcard_session_data }) => showcard_session_data);
   const indicator_variant = {
     hidden: { opacity: 0 },
     waiting: i => ({
@@ -60,12 +65,12 @@ const UserCard = ({ user }) => {
     <motion.div
       className='username'
     >
-      {user.name}
+      {_showcard_session_data?.memberDetails['chatID'] !== user['chatID'] ? user.memberName : "Me"}
       <motion.div className='text-container'>
         <p>{user?.scorecard}</p>
         {(user?.scorecard !== null || !user.visibility) &&
           <motion.div className='cover'>
-            <AiOutlineEyeInvisible strokeWidth={0.5} />
+            <FaShieldAlt strokeWidth={0.5} />
           </motion.div>}
       </motion.div>
       <motion.div
@@ -79,6 +84,11 @@ const UserCard = ({ user }) => {
               "available" : "showing"
         }
       >
+      </motion.div>
+      <motion.div className='comms'>
+        {/* <FaComment/> */}
+        <FaPhone/>
+        {/* <FaVideo/> */}
       </motion.div>
     </motion.div>
   )

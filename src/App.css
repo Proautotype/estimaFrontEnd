@@ -1,5 +1,32 @@
-p,h1,h2,ul,ol,li,input{
+p,h1,h2,ol,input{
   margin: 0px;
   padding: 0px;
   display: inline !important ;
+}
+
+li{
+  margin: 0px;
+  padding: 0px;
+}
+
+/* Works on Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: blue orange;
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 7px;
+}
+
+*::-webkit-scrollbar-track {
+  background: rgba(255, 0, 204, 0.336);
+  border-radius: 20px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgb(249, 84, 216);
+  border-radius: 20px;
+  border: 1px solid rgb(111, 0, 255);
 }

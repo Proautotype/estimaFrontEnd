@@ -1,0 +1,125 @@
+@use 'base.scss';
+
+.wrapper {
+    @include base.center-td();
+    width: 100vw;
+    gap: 10px;
+    font-family: 'Silkscreen', cursive;
+}
+
+.navbar {
+    width: 100%;
+    height: 70px;
+    background: linear-gradient(to left, rgb(0, 191, 255) -50%, rgb(255, 0, 187));
+    @include base.center-lr();
+
+    h1 {
+        background: linear-gradient(to right, rgb(0, 191, 255) -50%, rgb(255, 255, 255));
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        padding-left: 20px;
+        letter-spacing: 5px;
+        font-weight: bolder;
+    }
+}
+
+.content {
+    width: 60%;
+    // height: 400px;
+    @include base.center-td();
+    justify-content: flex-start;
+    padding-top: 10px;
+    font-family: 'Silkscreen', cursive;
+
+    h1 {
+        text-align: center;
+        font-size: 2.5em;
+        margin-bottom: 25px;
+        background: linear-gradient(to right, rgb(0, 191, 255) -50%, rgb(255, 0, 204));
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    h1.q2 {
+        margin-top: 25px;
+    }
+
+    p {
+        text-align: center;
+    }
+
+    div.login {
+        gap: 10px;
+        margin-top: 45px;
+        @include base.center-lr();
+    }
+}
+
+.footer {
+    margin-top: 30px;
+    //    height: 200px;
+    @include base.center-td();
+
+    h2 {
+        background: linear-gradient(to right, rgb(0, 191, 255) -50%, rgb(255, 0, 170));
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .company-box {
+        margin-top: 10px;
+        @include base.center-lr();
+        gap: 20px;
+
+        .company {
+            width: 120px;
+            height: 150px;
+            border: 2px solid white;
+            border-radius: 10px;
+            padding: 10px;
+            @include base.center-td();
+            gap: 20px;
+
+            svg {
+                font-size: 15px;
+            }
+        }
+    }
+}
+
+@keyframes colorAnimation {
+    0% {
+        background: linear-gradient(to left, rgb(0, 191, 255) -50%,
+                rgb(255, 7, 160));
+    }
+
+    50% {
+        background: linear-gradient(to left, rgb(0, 191, 255) 0%,
+                rgb(255, 7, 160));
+    }
+
+    100% {
+        background: linear-gradient(to left rgb(0, 191, 255) -50%,
+                rgb(255, 7, 160));
+    }
+
+}
+
+/* Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+    .content {
+        width: 90%;
+        button{
+            width: 200px;
+        }
+    }
+    .company-box {
+        width: 310px;
+        flex-wrap: wrap;
+        .company {
+            width: 80px;
+            height: 120px;
+            
+        }
+    }
+}
