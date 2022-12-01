@@ -13,6 +13,7 @@ import store from "./@redux/store";
 import { WorkPage } from "./View/WorkPage";
 import AccountSetup from "./View/Account/AccountSetup";
 import Dashboard from "./View/Dashboard";
+import NoticeBoardList from "./View/NoticeBoard/NoticeBoardList";
 
 const App = () => {
   const SocketServiceInstance = new SocketService();
@@ -30,6 +31,7 @@ const App = () => {
           </Route>
           <Route path="chat" element={<Chat />} />
         </Routes>
+        <NoticeBoardList/>
       </div>
     </Provider>
   );

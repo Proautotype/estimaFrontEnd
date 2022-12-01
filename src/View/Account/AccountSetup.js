@@ -1,22 +1,58 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import "../../assets/scss/accountSetup.scss";
 import "../../assets/scss/workPage.scss";
-import { FaEnvelope, FaEraser, FaFacebook, FaGlobe, FaInfo, FaInfoCircle, FaMailBulk, FaPhone, FaRemoveFormat } from 'react-icons/fa'
+import {
+  FaClosedCaptioning, FaEnvelope, FaEraser, FaFacebook,
+  FaGlobe, FaInfoCircle, FaLock, FaPhone, FaWindowClose
+} from 'react-icons/fa'
 import { useNavigate } from 'react-router';
+import AccountWebService from '../../services/WebServices/AccountWebService';
+import { useDispatch } from 'react-redux';
+import { addNotice } from '../../@redux/features/noticeSlice';
+import { nanoid } from '@reduxjs/toolkit';
+
 const AccountSetup = () => {
+  //redux
+  const dispatch = useDispatch();
   //router
   const navs = useNavigate();
   //state
   const [mail, setEmail] = useState("");
   const [organization, setOrganization] = useState("");
   const [phone, setPhone] = useState("");
+  const [pin, setPin] = useState("");
   const [plan, setPlan] = useState(0);
   const [type, setType] = useState(0);
+  const [working, setWorking] = useState(false);
+  //errors
+  const [errors, setErrors] = useState([]);
+  
+  const AWS = new AccountWebService();
   function gotoPrevious(loc) {
     navs(loc);
   }
+
+  async function signup(event) {
+    event.preventDefault();
+    setWorking(true);
+    try {
+      const response = await AWS.createAccount({mail,organization,phone,pin,plan});
+      if(response.status === 200){
+        gotoPrevious('/dashboard')
+      }else{}
+    } catch (error) {
+      console.dir(error)
+    }
+    // setTimeout(() => setWorking(false), [7000])
+    // gotoPrevious('/dashboard')
+  }
+
+  useEffect(()=>{
+    dispatch(addNotice({ id: nanoid(7), title: "success", data: "Account created successfully", timeout: 5 }))
+  },[])
+
   return (
-    <div className="wrapper">
+    <div className="wrapper" style={{ overflowX: "hidden" }}>
       <div className='navbar'>
         <h1>~ESTIMA~</h1>
       </div>
@@ -55,6 +91,7 @@ const AccountSetup = () => {
                 <InputElement icon={<FaGlobe />} placeholder={"Enter Your organization"} setSomeValue={setOrganization} />
                 <InputElement icon={<FaEnvelope />} placeholder={"Enter your mail"} setSomeValue={setEmail} />
                 <InputElement icon={<FaPhone />} placeholder={"Enter your contact"} setSomeValue={setPhone} />
+                <InputElement icon={<FaLock />} placeholder={"Set Pin"} setSomeValue={setPin} />
                 <div className='info'>
                   <FaInfoCircle />
                   <p>Loop</p>
@@ -62,49 +99,20 @@ const AccountSetup = () => {
               </div>
             </div>
           </div>
-          {/* <div className='ops' style={{ height: '220px',paddingBottom:'30px' }}>
-            <p className='title'>Choose your Plan</p>
-            <hr />
-            <div className='plan-parent'>
-              <div className={`plan ${plan === 0 ? "active" : ""}`} onClick={() => {
-                setPlan(0)
-              }}>
-                <h2>Free</h2>
-                <ul className='promises'>
-                  <li>3 Projects</li>
-                  <li>5 Estimations per project</li>
-                </ul>
-              </div>
-              <div className={`plan ${plan === 1 ? "active" : ""}`} onClick={() => {
-                setPlan(1)
-              }}>
-                <h2>Coffee</h2>
-                <ul className='promises'>
-                  <li>25 projects</li>
-                  <li>10 Estimations per project</li>
-                </ul>
-              </div>
-            </div>
-            <div className='info'>
-              <div className='misc'>
-                <FaInfoCircle />
-                <p>Loop</p>
-              </div>
-            </div>
-          </div> */}
           <div className='action-panel'>
             <button onClick={() => gotoPrevious('/')}>
               Previous
             </button>
-            <button onClick={() => gotoPrevious('/dashboard')}>
-              Next
+            <button onClick={(event) => signup(event)}>
+              {!working && "Next"}
+              {working && "...Working"}
             </button>
           </div>
-          <div className='action-panel'>
+          {/* <div className='action-panel'>
             <FBLogin />
-          </div>
+          </div> */}
         </div>
-      </div>
+      </div>      
     </div>
   )
 }
@@ -138,12 +146,13 @@ export const InputElement = ({ placeholder, icon, setSomeValue }) => {
 }
 
 const FBLogin = () => {
-  
+
   const login = () => {
-    
+
   }
 
   return <div className='fb-login' onClick={login}>
-    <FaFacebook size={25} onClick={login}/>
+    <FaFacebook size={25} onClick={login} />
   </div>
 }
+

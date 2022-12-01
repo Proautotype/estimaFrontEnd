@@ -18,5 +18,8 @@ export default {
         },
         name: {
         },       
+    },
+    ACCOUNT:{
+        name:"account-details-state"
     }
 }

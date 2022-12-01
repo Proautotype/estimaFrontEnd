@@ -5,7 +5,7 @@ import "../../assets/scss/ShowCard.scss";
 import UserCard from '../../components/showcard/UserCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { nanoid } from '@reduxjs/toolkit';
-import { WebService } from '../../services/WebServices/WebService';
+import { WebService } from '../../services/WebServices/GameWebService';
 import { clearStatus, clearData, saveData, addMembers, memberCast } from '../../@redux/features/showcard_slice';
 import { GiTrashCan } from "react-icons/gi";
 import { CircularProgress } from "@mui/joy"

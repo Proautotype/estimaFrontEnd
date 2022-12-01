@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice, current, } from "@reduxjs/toolkit";
-import { WebService } from "../../services/WebServices/WebService";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { WebService } from "../../services/WebServices/GameWebService";
 // import showCardSession from "../reducers/showcard_session.reducer";
 import reduxConstants from "../reduxConstants";
 const _state = {

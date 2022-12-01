@@ -6,7 +6,78 @@
   min-height: 100vh;
   height: auto;
   color: base.$native-white;
+  position: relative;
 }
+
+.notice-list {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  top: 20px;
+  right: 20px;
+  max-height: 650px;
+  overflow-y: scroll;
+  font-family: 'Courier New', Courier, monospace;  
+  overflow: -moz-scrollbars-none;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  &::-webkit-scrollbar{
+    overflow: -moz-scrollbars-none;
+  }
+}
+
+.notice-board-wrapper {
+  transition: 1s;
+  width: 400px;
+  height: auto;
+  background-color: base.$native-white;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0px 0px 5px black,0px 0px 10px black,0px 0px 25px black;
+  gap: 3px;
+
+  p {
+    margin: 0px;
+    padding: 0px;
+  }
+
+  .banner {
+    width: 100%;
+    height: 20px;
+    font-size: smaller;
+    // background-color: base.$darkblue;
+    @include base.center-lr();
+    gap: 5px;
+    color: rgba(23, 22, 23, 0.457);
+    font-weight: bold;
+    div{
+      gap: 3px;
+      @include base.center-lr();
+    }
+    svg:nth-child(2){
+      color: tomato;
+      cursor: pointer;
+    }
+  }
+
+  .detail {
+    width: 95%;
+    height: 40px;
+    border-top: 2px solid rgba(23, 22, 23, 0.457);
+    color: rgba(23, 22, 23, 0.457);
+    padding-top: 5px;
+  }
+
+  .filler {
+    width: 10%;
+    height: 3px;
+    background-color: rgb(59, 59, 59);
+  }
+}
+
+
 
 nav {
   @include base.center-lr();
@@ -92,17 +163,20 @@ nav {
     transition: 0.9s;
     position: relative;
     z-index: 100;
+
     p.game-card-title {
       // padding: 1px;
     }
+
     svg.game-card-icon {
       width: 70px;
       height: 70px;
-    }    
+    }
+
     // &:hover{
     //   background: linear-gradient( base.$native-bg 50%,rgb(0, 191, 255));
     // }
-    canvas{
+    canvas {
       background-color: transparent;
       position: absolute;
       z-index: 0;
@@ -136,7 +210,8 @@ nav {
       letter-spacing: 2px;
       font-size: medium;
     }
-    div.link{
+
+    div.link {
       padding: 5px;
       border: 2px solid white;
       border-radius: 20px;
